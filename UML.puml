@@ -1,0 +1,276 @@
+@startuml
+package “功能模块”
+{
+class User
+{
+  - u_id: String
+  - u_name: String
+  - u_code: String
+  - u_phone: String
+  - u_address: String
+  - u_money: double
+  - u_state: String
+
+  + User(u_id: String, u_name: String, u_code:String, u_phone:String, u_address:String)
+  + bool User_login(u_name: String, u_code:String)
+  + bool User_register(u_name: String, u_code:String)
+  + bool Searching_Good(o_name:String)
+  + void Check_info(User somebody)
+  + void Change_info(User somebody)
+  + void Change_name(u_name:String)
+  + void Change_phone(u_phone:String)
+  + void Change_address(u_address:String)
+  + void Recharge(u_money:double)
+
+}
+note right of User::User_login
+    用户输入u_name和u_code登录
+    <start>
+    [Bob,123]#[true]
+    [Alice,223]#[true]
+    []#[false]
+    <end>
+  end note
+note right of User::User_register
+    用户输入u_name和u_code注册
+    <start>
+    [Bob,123]#[true]
+    [Alice,223]#[true]
+    []#[true]
+    <end>
+  end note
+note right of User::Searching_Good
+    用户输入商品名称搜索商品
+    <start>
+    [apple]#[true]
+    [banana]#[true]
+    []#[false]
+    <end>
+  end note
+note right of User::Check_info
+    用户检查个人信息
+  end note
+note right of User::Change_info
+    用户更改个人信息
+  end note
+note right of User::Change_name
+    用户输入新名称更改现在的名称
+    <start>
+    [Bob]#[true]
+    [Alice]#[true]
+    []#[true]
+    <end>
+  end note
+note right of User::Change_phone
+    用户输入新电话号码更改现在的号码
+    <start>
+    [1234]#[true]
+    [5678]#[true]
+    []#[false]
+    <end>
+  end note
+note right of User::Change_address
+    用户输入新地址更改现在的地址
+    <start>
+    [Shanghai]#[true]
+    [Nanjing]#[true]
+    []#[false]
+    <end>
+  end note
+note right of User::Recharge
+    用户输入充值金额
+    <start>
+    [123]#[true]
+    [999]#[true]
+    []#[true]
+    <end>
+  end note
+class Sellers
+{
+   + void Sellers_menu()
+   + void Selling(User somebody)
+   + void Seller_Check_Goods(o_name:String)
+   + void Change_Good(User somebody)
+   + void DeSelling(o_name:String)
+   + void Seller_Check_Orders(User somebody)
+}
+note right of Sellers::Sellers_menu
+    卖家查看菜单
+  end note
+note right of Sellers::Selling
+    卖家发布商品
+  end note
+note right of Sellers::Seller_Check_Goods
+    卖家通过商品名称查看商品
+    <start>
+    [apple]#[true]
+    [banana]#[true]
+    []#[false]
+    <end>
+  end note
+note right of Sellers::Change_Good
+    卖家更改已发布商品的信息
+  end note
+note right of Sellers::DeSelling
+    卖家下架商品
+    <start>
+    [apple]#[true]
+    [banana]#[true]
+    []#[false]
+    <end>
+  end note
+note right of Sellers::Seller_Check_Orders
+    卖家查看订单
+  end note
+
+class Buyers
+{
+   + void Buyer_menu()
+   + void Buying(id:String, money: double)
+   + void Auction(User somebody)
+   + void detail_infi()
+   + void Buyer_check_Goods(User somebody)
+   + void Buyer_check_Orders(User somebody)
+   + void endAuction();
+}
+note right of Buyers::Buyer_menu
+    显示买家界面
+  end note
+note right of Buyers::Buying
+    买家购买商品，id表示商品id,money表示付的钱数
+    <start>
+    [12,999]#[true]
+    [U001,12]#[true]
+    []#[name]
+    <end>
+  end note
+note right of Buyers::detail_info
+    买家查看个人具体信息
+    <start>
+    []#[name]
+    <end>
+  end note
+note right of Buyers::Buyer_check_Goods
+  买家查看已购买商品
+  end note
+note right of Buyers::Buyer_check_Orders
+  买家查看自己的订单
+  end note
+note right of Buyers::endAuction
+  买家结束拍卖
+  end note
+
+class Administrator
+{
+   +bool Ad_Login()
+   +void Ad_menu()
+   +void Good_Del(o_name:String)
+   +void User_Del(u_name:String)
+   +void All_Users()
+   +void All_Goods()
+   +void All_Orders()
+   +void Logout()
+
+   - Ad_name:String
+   - Ad_code:String
+}
+note right of Administrator::Ad_Login
+    管理员输入u_name和u_code登录
+    注意管理员的名称和密码只能是Admin和123456
+    <start>
+    [Bob,123]#[false]
+    [Admin,123456]#[true]
+    []#[false]
+    <end>
+  end note
+
+note right of Administrator::Ad_menu
+  查看管理员菜单
+  end note
+note right of Administrator::Good_Del
+  管理员下架商品
+    <start>
+    [apple]#[true]
+    [banana]#[true]
+    []#[false]
+    <end>
+  end note
+note right of Administrator::User_Del
+   管理员封禁用户
+     <start>
+     [Bob]#[true]
+     [Alice]#[false]
+     []#[false]
+     <end>
+   end note
+note right of Administrator::All_Users
+   管理员查看所有用户
+   end note
+note right of Administrator::All_Goods
+   管理员查看所有商品
+   end note
+note right of Administrator::All_Orders
+   管理员查看所有订单
+   end note
+note right of Administrator::Logout
+   管理员登出
+   end note
+}
+
+package “数据库模块”
+{
+class Order
+{
+	o_id: String
+	g_id: String
+	per_price: double
+	o_sum: int
+	o_time: String
+	seller_id: String
+	buyer_id: String
+}
+class Good
+{
+	g_state: String
+    g_id: String
+	g_name: String
+	g_price: double
+	g_number: int
+	g_describe: String
+	seller_id: String
+	g_time: String
+}
+}
+管理员登录<|-- Main
+用户登录<|--Main
+用户注册<|--Main
+退出程序<|--Main
+查看商品列表<|--管理员登录
+查看订单列表<|--管理员登录
+搜索商品<|--管理员登录
+下架商品<|--管理员登录
+查看用户列表<|--管理员登录
+封禁用户<|--管理员登录
+用户功能<|--用户登录
+用户功能<|--用户注册
+买家功能<|--用户功能
+卖家功能<|--用户功能
+个人信息管理<|--用户功能
+注销登录<|--用户功能
+发布商品<|--卖家功能
+下架商品<|--卖家功能
+查看发布商品<|--卖家功能
+查看历史订单<|--卖家功能
+修改商品信息<|--卖家功能
+返回主界面<|--卖家功能
+查看商品maijia列表<|--买家功能
+查看商品详细信息<|--买家功能
+商品报价<|--买家功能
+查看历史订单<|--买家功能
+搜索<|--买家功能
+查看购物车<|--买家功能
+查看信息<|--个人信息管理
+充值<|--个人信息管理
+修改信息<|--个人信息管理
+返回用户主界面<|--个人信息管理
+@enduml
